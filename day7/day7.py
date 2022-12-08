@@ -87,6 +87,9 @@ class Dir:
     def __repr__(self):
         return str(self)
 
+    def __lt__(self, other):
+        return self.size < other.size
+
 
 class Day7Runner:
     head: Dir
@@ -144,3 +147,6 @@ print(sum([d.size for d in f]))
 with open("day7/input.txt", "r") as file:
     d7 = Day7Runner(file.read())
     print(sum([d.size for d in d7.find(lambda x: x.size < 100_000)]))
+    current_space = 70_000_000 - d7.head.size
+    delta_space = 30_000_000 - current_space
+    print(min(d7.find(lambda x: x.size >= delta_space)).size)
