@@ -56,9 +56,12 @@ class Board:
             s += "\n"
         return s
 
+    # determines if a set of coordinates is visible from any side
     def visible(self, x, y) -> bool:
         return check_line(self._board[y], x) or check_line(self.build_line(x), y)
 
+    # build line allows us to grab a list that is made of tiles from adjacent arrays
+    # this needs to be used when looking for a line parallel to y axis
     def build_line(self, x):
         return [i[x] for i in self._board]
 
@@ -70,6 +73,7 @@ class Board:
     def height(self) -> int:
         return len(self._board)
 
+    # Generator for board tiles
     def tile_generator(self):
         for x in range(0, self.width):
             for y in range(0, self.height):
@@ -81,12 +85,14 @@ class Day8Runner:
         self.board = Board(page)
         print(self.board)
 
+    # solve generates visible tile coordinates
     def solve(self):
         for x in range(0, self.board.width):
             for y in range(0, self.board.height):
                 if self.board.visible(x, y):
                     yield y, x
 
+    # scenic_scores generates scenic scores for every tile on the board
     def scenic_scores(self):
         for y, x in self.board.tile_generator():
             yield scenic_score(self.board._board[x], y) * scenic_score(
